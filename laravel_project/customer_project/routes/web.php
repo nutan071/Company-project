@@ -31,10 +31,13 @@ Route::get('/login', [UserController::class, 'showLoginForm']);
 Route::post('/login', [UserController::class, 'login'])->name('login');
 
 
-Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
-Route::post('products', [ProductController::class, 'store'])->name('products.store');
+// Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
+// Route::post('products', [ProductController::class, 'store'])->name('products.store');
 
 
+
+Route::get('/products', 'ProductController@create'); 
+Route::post('/products', 'ProductController@store'); 
 
 
 
