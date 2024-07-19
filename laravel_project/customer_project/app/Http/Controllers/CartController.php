@@ -38,4 +38,15 @@ class CartController extends Controller
     {
         return view('cart.checkout');
     }
+
+
+    public function remove($id)
+{
+    $cart = session('cart');
+    if (isset($cart[$id])) {
+        unset($cart[$id]);
+        session()->put('cart', $cart);
+    }
+    return redirect()->route('cart.view');
+} 
 }

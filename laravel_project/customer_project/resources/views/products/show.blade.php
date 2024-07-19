@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <img class="card-img-top" style=" width: 200px; " src="{{ asset('assets/images/' . $product->image ) }}" alt="{{ $product->name }}">
+                <img class="card-img-top" style="width: 200px;" src="{{ asset('assets/images/' . $product->image ) }}" alt="{{ $product->name }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $product->name }}</h5>
                     <p class="card-text">{{ $product->description }}</p>
@@ -24,6 +24,10 @@
                                 </span>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="total-price">Total Price</label>
+                            <input type="text" id="total-price" class="form-control" value="${{ $product->price }}" readonly>
+                        </div>
                         <button type="submit" class="btn btn-primary">Add to Cart</button>
                     </form>
                 </div>
@@ -35,9 +39,12 @@
 <script>
     function changeQuantity(amount) {
         var quantity = document.getElementById('quantity');
+        var totalPrice = document.getElementById('total-price');
+        var pricePerUnit = {{ $product->price }};
         var newQuantity = parseInt(quantity.value) + amount;
         if (newQuantity > 0) {
             quantity.value = newQuantity;
+            totalPrice.value = '$' + (newQuantity * pricePerUnit).toFixed(2);
         }
     }
 </script>

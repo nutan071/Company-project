@@ -68,7 +68,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('order/create', [OrderController::class, 'create'])->name('order.create');
     
     // Cart Routes
-    Route::get('cart', [CartController::class, 'view'])->name('cart.view');
+  // web.php
+  // routes/web.php
+   
+Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
+Route::post('/cart/add/{id}', [CartController::class, 'addItem'])->name('cart.add');
+Route::delete('/cart/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+
+
     // Route::post('cart/add/{id}', [CartController::class, 'addItem'])->name('cart.addItem');
     // Route::get('cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 });

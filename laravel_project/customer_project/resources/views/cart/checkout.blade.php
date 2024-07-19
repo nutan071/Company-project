@@ -1,4 +1,4 @@
-<!-- resources/views/cart/checkout.blade.php -->
+
 @extends('layouts.app')
 
 @section('content')
@@ -32,6 +32,8 @@
                         <form action="{{ route('order.place') }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-primary">Proceed to Payment</button>
+                            <button type="submit" class="btn btn-primary">Proceed to Payment</button>
+
                         </form>
                     @else
                         <p>Your cart is empty.</p>
