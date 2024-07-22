@@ -1,11 +1,13 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Products;
 use App\Models\Order;
-use App\Models\OrderItem;
+use App\Models\Oder_items;
 use Illuminate\Support\Facades\Auth;
+use Psy\Readline\Hoa\Console;
 
 class CartController extends Controller
 {
@@ -48,62 +50,48 @@ class CartController extends Controller
     }
 
     public function processPOD(Request $request)
-    {
-        $cart = session('cart');
-        if (!$cart) {
-            return redirect()->route('cart.view')->with('error', 'Your cart is empty.');
-        }
-
-        $order = new Order();
-        $order->user_id = Auth::id();
-        $order->total_price = array_sum(array_map(function ($product) {
-            return $product['price'] * $product['quantity'];
-        }, $cart));
-        $order->status = 'pending';
-        $order->save();
-
-        foreach ($cart as $id => $details) {
-            $orderItem = new OrderItem();
-            $orderItem->order_id = $order->id;
-            $orderItem->product_id = $id;
-            $orderItem->quantity = $details['quantity'];
-            $orderItem->price = $details['price'];
-            $orderItem->save();
-        }
-
-        session()->put('purchased', $cart);
-        session()->forget('cart');
-
-        return view('cart.thank-you', ['method' => 'POD', 'cart' => $cart, 'grandTotal' => $order->total_price]);
-    }
-
-    public function processCOD(Request $request)
-    {
-        $cart = session('cart');
-        if (!$cart) {
-            return redirect()->route('cart.view')->with('error', 'Your cart is empty.');
-        }
-
-        $order = new Order();
-        $order->user_id = Auth::id();
-        $order->total_price = array_sum(array_map(function ($product) {
-            return $product['price'] * $product['quantity'];
-        }, $cart));
-        $order->status = 'pending';
-        $order->save();
-
-        foreach ($cart as $id => $details) {
-            $orderItem = new OrderItem();
-            $orderItem->order_id = $order->id;
-            $orderItem->product_id = $id;
-            $orderItem->quantity = $details['quantity'];
-            $orderItem->price = $details['price'];
-            $orderItem->save();
-        }
-
-        session()->put('purchased', $cart);
-        session()->forget('cart');
-
-        return view('cart.thank-you', ['method' => 'COD', 'cart' => $cart, 'grandTotal' => $order->total_price]);
-    }
+{
+   
+    $method = 'Pay on Delivery';
+    $grandTotal = $this->calculateCartTotal(); 
+    
+   
+    $request->session()->forget('cart');
+    
+    return view('cart.thank_you', compact('method', 'grandTotal'));
 }
+
+public function processCOD(Request $request)
+{
+    
+    $method = 'Cash on Delivery';
+    $grandTotal = $this->calculateCartTotal(); 
+
+    
+    $request->session()->forget('cart');
+    
+    return view('cart.thank_you', compact('method', 'grandTotal'));
+}
+
+private function calculateCartTotal()
+{
+    print('hello');
+    $cart = session('cart', []);
+    return array_sum(array_map(function ($product) {
+        return $product['quantity'] * $product['price'];
+    }, $cart));
+}
+
+
+// private function quantity($quantity)
+// {
+//     $cart = session('cart', []);
+
+//     return array_sum(array_map(function ($product) use ($quantity) {
+//         return $quantity * $product['price'];
+//     }, $cart));
+// }
+
+
+}
+

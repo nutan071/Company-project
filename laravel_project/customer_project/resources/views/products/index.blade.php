@@ -2,6 +2,16 @@
 
 @section('content')
 <div class="container">
+
+    <div class="row justify-content-end mb-3">
+        <div class="col-md-2 text-right">
+            <a href="{{ route('cart.view') }}">
+                <img src="{{ URL::asset('assets/images/cart.png') }}" alt="Cart" style="width: 50px; height: 50px;">
+                <span class="badge badge-pill badge-danger">{{ session('cart') ? count(session('cart')) : 0 }}</span>
+            </a>
+        </div>
+    </div>
+
     <div class="row justify-content-center">
         @foreach($products as $product)
             <div class="col-md-4 mb-4">
@@ -11,7 +21,7 @@
                         <h5 class="card-title">{{ $product->name }}</h5>
                         <p class="card-text">{{ $product->description }}</p>
                         <p class="card-text"><strong>Price:</strong> ${{ $product->price }}</p>
-                        <p class="card-text">{{ $product->stock }}</p>
+                        <p class="card-text">Stock: {{ $product->stock }}</p>
                         <form action="{{ route('cart.add', $product->id) }}" method="POST">
                             @csrf
                             <div class="form-group">

@@ -60,7 +60,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-    Route::post('order/place', [OrderController::class, 'placeOrder'])->name('order.place');
+    Route::post('order/place', [OrderController::class, 'placeOrder'])->name('order.place');    
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
 
     Route::resource('products', ProductController::class);
@@ -72,14 +72,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
     Route::post('/cart/add/{id}', [CartController::class, 'addItem'])->name('cart.add');
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-    Route::post('/cart/process-pod', [CartController::class, 'processPOD'])->name('cart.processPOD');
-    Route::post('/cart/process-cod', [CartController::class, 'processCOD'])->name('cart.processCOD');
+    Route::get('/cart/process-pod', [CartController::class, 'processPOD'])->name('cart.processPOD');
+    Route::GET('/cart/process-cod', [CartController::class, 'processCOD'])->name('cart.processCOD');
 
+    
+    
+    
 
+    
     Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
-    // Route::post('cart/add/{id}', [CartController::class, 'addItem'])->name('cart.addItem');
-    // Route::get('cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+
 });
 
 
