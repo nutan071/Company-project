@@ -23,37 +23,36 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Manage Orders</h5>
                                     <p class="card-text">View and manage your orders.</p>
-                                    <a href="#" class="btn btn-primary">View Orders</a>
+                                    <a href="{{ route('cart.view') }}" class="btn btn-primary">View Cart</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-dfkoritreiteritopertieroiteroptiertieroptieropip
+
                     <div class="mt-4">
-                        <h2>All Products</h2>
-                        <div class="row">
-                        @foreach($products as $product)
-                            <div class="col-md-4 mb-4">
-                                <div class="card">
-                                    <img class="card-img-top" src="{{ URL::asset('assets/images/' . $product->image) }}" alt="{{ $product->name }}">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ $product->name }}</h5>
-                                        <p class="card-text">{{ $product->description }}</p>
-                                        <p class="card-text">${{ $product->price }}</p>
-                                        <p class="card-text">{{ $product->stock }} in stock</p>
-                                        <a href="{{ route('products.show', $product->id) }}" class="btn btn-primary">View Product</a>
+                        <h2>Purchased Products</h2>
+                        @if(session('purchased'))
+                            <div class="row">
+                                @foreach(session('purchased') as $product)
+                                    <div class="col-md-4 mb-4">
+                                        <div class="card">
+                                            <img class="card-img-top" src="{{ URL::asset('assets/images/' . $product['image']) }}" alt="{{ $product['name'] }}">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ $product['name'] }}</h5>
+                                                <p class="card-text">${{ $product['price'] }}</p>
+                                                <p class="card-text">Quantity: {{ $product['quantity'] }}</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                @endforeach
                             </div>
-                        @endforeach
-
-                        </div>
+                        @else
+                            <p>No products purchased yet.</p>
+                        @endif
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
-ijrurtoreutoretuertuerotueroitueiortueriotuoltjerteitueuteputerptueprtuerotuerpotipetiopeiteiteroptieptipe

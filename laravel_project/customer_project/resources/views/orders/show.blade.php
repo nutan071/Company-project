@@ -1,4 +1,3 @@
-<!-- resources/views/orders/show.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -8,30 +7,17 @@
             <div class="card">
                 <div class="card-header">Order #{{ $order->id }}</div>
                 <div class="card-body">
-                    <p><strong>Total Amount:</strong> ${{ $order->total_amount }}</p>
-                    <p><strong>Status:</strong> {{ $order->status }}</p>
-
-                    <h5>Order Items</h5>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Product Name</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($order->orderItems as $item)
-                                <tr>
-                                    <td>{{ $item->product->name }}</td>
-                                    <td>{{ $item->quantity }}</td>
-                                    <td>${{ $item->price }}</td>
-                                    <td>${{ $item->quantity * $item->price }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <h4>Total Price: ${{ $order->total_price }}</h4>
+                    <h5>Status: {{ $order->status }}</h5>
+                    <hr>
+                    <h5>Items</h5>
+                    <ul>
+                        @foreach($order->items as $item)
+                            <li>
+                                {{ $item->product->name }} - ${{ $item->price }} x {{ $item->quantity }}
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         </div>

@@ -7,11 +7,18 @@
             <div class="card">
                 <div class="card-header">Your Cart</div>
                 <div class="card-body">
-                    @if (session('cart'))
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if(empty(session('cart')))
+                        <p>Your cart is empty.</p>
+                    @else
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
+                                    <th>Product</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
                                     <th>Total</th>
@@ -19,39 +26,37 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php
-                                    $grandTotal = 0;
-                                @endphp
-                                @foreach (session('cart') as $id => $product)
-                                    @php
-                                        $total = $product['price'] * $product['quantity'];
-                                        $grandTotal += $total;
-                                    @endphp
+                                @foreach(session('cart') as $id => $details)
                                     <tr>
-                                        <td>{{ $product['name'] }}</td>
-                                        <td>{{ $product['quantity'] }}</td>
-                                        <td>${{ $product['price'] }}</td>
-                                        <td>${{ $total }}</td>
+                                        <td>{{ $details['name'] }}</td>
+                                        <td>{{ $details['quantity'] }}</td>
+                                        <td>${{ $details['price'] }}</td>
+                                        <td>${{ $details['quantity'] * $details['price'] }}</td>
                                         <td>
-                                        <form action="{{ route('cart.remove', $id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                                        </form>
-
+                                            <form action="{{ route('cart.remove', $id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Remove</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
-                                <tr>
-                                    <td colspan="3" class="text-right"><strong>Total:</strong></td>
-                                    <td>${{ $grandTotal }}</td>
-                                    <td></td>
-                                </tr>
                             </tbody>
                         </table>
-                        <a href="{{ route('cart.checkout') }}" class="btn btn-primary">Checkout</a>
-                    @else
-                        <p>Your cart is empty.</p>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <h4>Total: ${{ array_sum(array_map(function ($product) { return $product['quantity'] * $product['price']; }, session('cart'))) }}</h4>
+                                <form action="{{ route('cart.processPOD') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">Pay on Delivery</button>
+                                </form>
+                                <form action="{{ route('cart.processCOD') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-secondary">Cash on Delivery</button>
+                                </form>
+                            </div>
+                        </div>
                     @endif
                 </div>
             </div>

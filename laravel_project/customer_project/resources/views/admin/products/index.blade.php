@@ -1,3 +1,5 @@
+
+
 @extends('layouts.app')
 
 @section('content')
@@ -33,7 +35,7 @@
                         @endif
                     </td>
 
-                  
+
                     <td>
                         <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-warning">Edit</a>
                         <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" style="display:inline;">
@@ -48,4 +50,5 @@
     </table>
 </div>
 @endsection
+
 

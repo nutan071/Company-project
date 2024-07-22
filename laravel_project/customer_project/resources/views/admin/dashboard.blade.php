@@ -1,3 +1,5 @@
+frretrte
+
 @extends('layouts.app')
 
 @section('content')
