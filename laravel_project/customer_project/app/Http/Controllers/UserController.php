@@ -39,10 +39,10 @@ class UserController extends Controller
                 'password' => 'required|min:6',
             ]);
 
-            if ($validator->fails()) {
-                // echo "<pre>";print_r($validator->fails());die();
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
+            // if ($validator->fails()) {
+            //     // echo "<pre>";print_r($validator->fails());die();
+            //     return redirect()->back()->withErrors($validator)->withInput();
+            // }
 
             try {
                 $user = User::create([
