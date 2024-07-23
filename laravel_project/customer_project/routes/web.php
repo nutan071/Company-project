@@ -60,7 +60,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-    Route::post('order/place', [OrderController::class, 'placeOrder'])->name('order.place');    
+    Route::post('order/place', [OrderController::class, 'placeOrder'])->name('order.place');
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
 
     Route::resource('products', ProductController::class);
@@ -75,11 +75,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cart/process-pod', [CartController::class, 'processPOD'])->name('cart.processPOD');
     Route::GET('/cart/process-cod', [CartController::class, 'processCOD'])->name('cart.processCOD');
 
-    
-    
-    
 
-    
+
+    Route::post('/cart/save/{id}', [CartController::class, 'saveForLater'])->name('cart.saveForLater');
+    Route::post('/cart/moveToCart/{id}', [CartController::class, 'moveToCart'])->name('cart.moveToCart');
+
+
+
+
     Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
 

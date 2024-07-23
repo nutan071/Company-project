@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         return view('user.dashboard');
-    }   
+    }
 
     public function dashboard()
     {
@@ -49,16 +49,16 @@ class UserController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'password' => bcrypt($request->password),
-                    'role_id' => 2, 
+                    'role_id' => 2,
                 ]);
                 event(new Registered($user));
 
                 Auth::login($user);
-        
+
                 if ($user->role_id === 1) {
                     return redirect()->route('admin.dashboard');
                 }
-    
+
                 return redirect()->route('user.dashboard');
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', 'Registration failed! Please try again.');
@@ -68,13 +68,13 @@ class UserController extends Controller
     //         } catch (\Exception $e) {
     //             print_r($e->getMessage());die();
     //         }
-            
+
 
     //         return redirect('login')->with('success', 'Registration successful! Please log in.');
     //     } catch (\Exception $e) {
     //         return redirect()->back()->with('error', 'Registration failed! Please try again.');
-        
-    
+
+
 
     public function showLoginForm()
     {

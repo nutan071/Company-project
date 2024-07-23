@@ -51,25 +51,25 @@ class CartController extends Controller
 
     public function processPOD(Request $request)
 {
-   
+
     $method = 'Pay on Delivery';
-    $grandTotal = $this->calculateCartTotal(); 
-    
-   
+    $grandTotal = $this->calculateCartTotal();
+
+
     $request->session()->forget('cart');
-    
+
     return view('cart.thank_you', compact('method', 'grandTotal'));
 }
 
 public function processCOD(Request $request)
 {
-    
-    $method = 'Cash on Delivery';
-    $grandTotal = $this->calculateCartTotal(); 
 
-    
+    $method = 'Cash on Delivery';
+    $grandTotal = $this->calculateCartTotal();
+
+
     $request->session()->forget('cart');
-    
+
     return view('cart.thank_you', compact('method', 'grandTotal'));
 }
 
@@ -83,14 +83,42 @@ private function calculateCartTotal()
 }
 
 
-// private function quantity($quantity)
-// {
-//     $cart = session('cart', []);
 
-//     return array_sum(array_map(function ($product) use ($quantity) {
-//         return $quantity * $product['price'];
-//     }, $cart));
-// }
+
+public function saveForLater($id)
+{
+    $cart = session()->get('cart', []);
+    $saveForLater = session()->get('saveForLater', []);
+
+    if(isset($cart[$id])) {
+        $saveForLater[$id] = $cart[$id];
+        unset($cart[$id]);
+        session()->put('cart', $cart);
+        session()->put('saveForLater', $saveForLater);
+        return redirect()->route('cart.view')->with('success', 'Product saved for later!');
+    }
+
+    return redirect()->route('cart.view')->with('error', 'Product not found in cart!');
+}
+
+public function moveToCart($id)
+{
+    $cart = session()->get('cart', []);
+    $saveForLater = session()->get('saveForLater', []);
+
+    if(isset($saveForLater[$id])) {
+        $cart[$id] = $saveForLater[$id];
+        unset($saveForLater[$id]);
+        session()->put('cart', $cart);
+        session()->put('saveForLater', $saveForLater);
+        return redirect()->route('cart.view')->with('success', 'Product moved to cart!');
+    }
+
+    return redirect()->route('cart.view')->with('error', 'Product not found in saved items!');
+}
+
+
+
 
 
 }
