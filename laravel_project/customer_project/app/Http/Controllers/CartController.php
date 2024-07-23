@@ -51,27 +51,34 @@ class CartController extends Controller
 
     public function processPOD(Request $request)
 {
-
     $method = 'Pay on Delivery';
-    $grandTotal = $this->calculateCartTotal();
+    $totalPrice = $this->calculateCartTotal();
 
-
+    $request->session()->put('totalPrice', $totalPrice);
+    $request->session()->put('method', $method);
     $request->session()->forget('cart');
 
-    return view('cart.thank_you', compact('method', 'grandTotal'));
+  
+    // dd('Total Price:', $totalPrice, 'Method:', $method);
+
+    return redirect()->route('cart.thank_you');
 }
+    
+    public function processCOD(Request $request)
+    {
+        $method = 'Cash on Delivery';
+        $totalPrice = $this->calculateCartTotal();
+    
+        $request->session()->put('totalPrice', $totalPrice);
+        $request->session()->put('method', $method);
+        $request->session()->forget('cart');
+    
+        return redirect()->route('cart.thank_you');
+    }
+    
+    
+    
 
-public function processCOD(Request $request)
-{
-
-    $method = 'Cash on Delivery';
-    $grandTotal = $this->calculateCartTotal();
-
-
-    $request->session()->forget('cart');
-
-    return view('cart.thank_you', compact('method', 'grandTotal'));
-}
 
 private function calculateCartTotal()
 {
@@ -82,7 +89,13 @@ private function calculateCartTotal()
     }, $cart));
 }
 
+public function thankYou(Request $request)
+{
+    $totalPrice = $request->session()->get('totalPrice');
+    $method = $request->session()->get('method');
 
+    return view('cart.thank_you', compact('totalPrice', 'method'));
+}
 
 
 public function saveForLater($id)

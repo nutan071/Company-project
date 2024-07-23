@@ -46,8 +46,9 @@
                                             </form>
                                             <form action="{{ route('cart.saveForLater', $id) }}" method="POST" style="display:inline;">
                                                 @csrf
-                                                <button type="submit" class="btn btn-secondary">Save for Later</button>
+                                                <button type="submit" class="btn btn-secondary" >Save for Later</button>
                                             </form>
+                                
                                         </td>
                                     </tr>
                                 @endforeach
@@ -56,23 +57,25 @@
 
                         <div class="row mt-4">
                             <div class="col-md-12">
-                                <h4>Total: $<span id="cart-total">{{ array_sum(array_map(function ($product) { return $product['quantity'] * $product['price']; }, session('cart'))) }}</span></h4>
-                                <form action="{{ route('cart.processPOD') }}" method="GET" class="d-inline">
+                                <h4>Total: $<span id="cart-total">{{ array_sum(array_map(function ($product) { return $product['quantity'] * $product['price']; }, session('cart', []))) }}</span></h4>
+                                <form id="pay-on-delivery-form" action="{{ route('cart.processPOD') }}" method="POST" class="d-inline">
                                     @csrf
+                                    <input type="hidden" name="totalPrice" value="{{ array_sum(array_map(function ($product) { return $product['quantity'] * $product['price']; }, session('cart', []))) }}">
                                     <button type="submit" class="btn btn-primary">Pay on Delivery</button>
                                 </form>
-                                <form action="{{ route('cart.processCOD') }}" method="GET" class="d-inline">
+                                <form id="cash-on-delivery-form" action="{{ route('cart.processCOD') }}" method="POST" class="d-inline">
                                     @csrf
+                                    <input type="hidden" name="totalPrice" value="{{ array_sum(array_map(function ($product) { return $product['quantity'] * $product['price']; }, session('cart', []))) }}">
                                     <button type="submit" class="btn btn-secondary">Cash on Delivery</button>
                                 </form>
                             </div>
                         </div>
                     @endif
-
-                    <div class="card mt-4">
+    
+                    <div class="card mt-4"> 
                         <div class="card-header">Saved for Later</div>
                         <div class="card-body">
-                            @if(empty(session('saveForLater')))
+                            @if(empty(session('saveForLater'))) 
                                 <p>No items saved for later.</p>
                             @else
                                 <table class="table">
@@ -135,17 +138,17 @@
 
                 console.log(`ID: ${id}, Quantity: ${quantity}, Price: ${price}`);
 
-                // Update the product total
+             
                 productTotal.textContent = `$${(quantity * price).toFixed(2)}`;
 
-                // Update the cart total
+              
                 updateCartTotal();
             });
         });
 
         function updateCartTotal() {
             let total = 0;
-            document.querySelectorAll('.product-total').forEach(totalCell => {
+            $totalPrice=document.querySelectorAll('.product-total').forEach(totalCell => {
                 total += parseFloat(totalCell.textContent.replace('$', ''));
             });
             cartTotal.textContent = total.toFixed(2);

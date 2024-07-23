@@ -72,9 +72,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
     Route::post('/cart/add/{id}', [CartController::class, 'addItem'])->name('cart.add');
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-    Route::get('/cart/process-pod', [CartController::class, 'processPOD'])->name('cart.processPOD');
-    Route::GET('/cart/process-cod', [CartController::class, 'processCOD'])->name('cart.processCOD');
-
+    Route::post('/process-POD', [CartController::class, 'processPOD'])->name('cart.processPOD');
+    Route::post('/process-COD', [CartController::class, 'processCOD'])->name('cart.processCOD');
+    Route::get('/thankyou', [CartController::class, 'thankYou'])->name('cart.thank_you');
 
 
     Route::post('/cart/save/{id}', [CartController::class, 'saveForLater'])->name('cart.saveForLater');
@@ -83,7 +83,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+
 
 
 });

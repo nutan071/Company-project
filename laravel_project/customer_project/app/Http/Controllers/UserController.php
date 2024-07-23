@@ -84,14 +84,14 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        // echo '<pre>';print_r($credentials);die;
-
+        
 
         if (Auth::attempt($credentials)) {
             // echo '<pre>';print_r(Auth::user());die;
 
             $user = Auth::user();
 
+            // echo "<pre>";print_r($user);die;
             if ($user->role_id === 1) {
                 return redirect()->route('admin.dashboard');
             }
